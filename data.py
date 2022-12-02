@@ -123,8 +123,8 @@ class PDBBindDataModule(pl.LightningDataModule):
     def setup(self, stage):
         self.dt_train = PDBBindDataset(
             root=self.root, stage='train', only_pocket=self.only_pocket)
-        self.dt_val = PDBBindDataset(
-            root=self.root, stage='val', only_pocket=self.only_pocket)
+        # self.dt_val = PDBBindDataset(
+        #     root=self.root, stage='val', only_pocket=self.only_pocket)
 
     def train_dataloader(self):
         return pyg.loader.DataLoader(self.dt_train,
@@ -132,12 +132,12 @@ class PDBBindDataModule(pl.LightningDataModule):
                                      num_workers=self.num_workers,
                                      persistent_workers=True)
 
-    def val_dataloader(self):
-        return pyg.loader.DataLoader(self.dt_val,
-                                     batch_size=self.batch_size,
-                                     num_workers=self.num_workers,
-                                     persistent_workers=True,
-                                     shuffle=False)
+    # def val_dataloader(self):
+    #     return pyg.loader.DataLoader(self.dt_val,
+    #                                  batch_size=self.batch_size,
+    #                                  num_workers=self.num_workers,
+    #                                  persistent_workers=True,
+    #                                  shuffle=False)
 
 
 if __name__ == '__main__':
@@ -145,5 +145,3 @@ if __name__ == '__main__':
     use_pocket = True
     dt_train = PDBBindDataset(root=data_path, stage='train',
                               only_pocket=use_pocket)
-    dt_val = PDBBindDataset(root=data_path, stage='val',
-                            only_pocket=use_pocket)
