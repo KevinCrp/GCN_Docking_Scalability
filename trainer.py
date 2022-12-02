@@ -86,7 +86,7 @@ def train(batch_size: int,
         trainer_test = pl.Trainer(max_epochs=num_epochs,
                              num_sanity_val_steps=0)
         metrics_on_validation = trainer_test.validate(
-            model, dataloaders=datamodule.train_dataloader())[0]
+            model, dataloaders=datamodule.val_dataloader())[0]
         print('\n{}'.format(training_time), end='')
         print('{},{},{}'.format(metrics_on_validation['ep_end/val_loss'],
                                 metrics_on_validation['ep_end/val_r2_score'],

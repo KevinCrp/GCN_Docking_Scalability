@@ -132,12 +132,12 @@ class PDBBindDataModule(pl.LightningDataModule):
                                      num_workers=self.num_workers,
                                      persistent_workers=True)
 
-    # def val_dataloader(self):
-    #     return pyg.loader.DataLoader(self.dt_val,
-    #                                  batch_size=self.batch_size,
-    #                                  num_workers=self.num_workers,
-    #                                  persistent_workers=True,
-    #                                  shuffle=False)
+    def val_dataloader(self):
+        return pyg.loader.DataLoader(self.dt_train,
+                                     batch_size=self.batch_size,
+                                     num_workers=self.num_workers,
+                                     persistent_workers=True,
+                                     shuffle=False)
 
 
 if __name__ == '__main__':
