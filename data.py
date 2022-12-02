@@ -128,9 +128,10 @@ class PDBBindDataModule(pl.LightningDataModule):
 
     def train_dataloader(self):
         return pyg.loader.DataLoader(self.dt_train,
-                                     batch_size=self.batch_size, shuffle=True,
+                                     batch_size=self.batch_size,
                                      num_workers=self.num_workers,
-                                     persistent_workers=True)
+                                     persistent_workers=True,
+                                     shuffle=False)
 
     def val_dataloader(self):
         return pyg.loader.DataLoader(self.dt_train,

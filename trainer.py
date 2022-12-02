@@ -68,7 +68,8 @@ def train(batch_size: int,
     strategy = None
     devices = None
     if accelerator_name != '' and nb_devices > 0:
-        strategy = DDPStrategy(find_unused_parameters=False, accelerator=accelerator_name)
+        strategy = DDPStrategy(find_unused_parameters=False,
+                               accelerator=accelerator_name)
         devices = nb_devices
     trainer = pl.Trainer(devices=devices,
                          strategy=strategy,
@@ -84,7 +85,7 @@ def train(batch_size: int,
     if trainer.is_global_zero:
         del trainer
         trainer_test = pl.Trainer(max_epochs=num_epochs,
-                             num_sanity_val_steps=0)
+                                  num_sanity_val_steps=0)
         metrics_on_validation = trainer_test.validate(
             model, dataloaders=datamodule.val_dataloader())[0]
         print('\n{}'.format(training_time), end='')
