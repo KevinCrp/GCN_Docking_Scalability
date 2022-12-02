@@ -147,7 +147,7 @@ if __name__ == '__main__':
     parser.add_argument('--model_name',
                         type=str,
                         help='The model name',
-                        choices=['MolGCN', 'MolGAT', 'MolAttentiveFP'],
+                        choices=['MolGCN', 'MolGAT', 'MolAttentiveFP', 'MolAttentiveFP_EA'],
                         required=True)
     args = parser.parse_args()
 

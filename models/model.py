@@ -6,6 +6,7 @@ import torchmetrics.functional as tmf
 from models.gcn import MolGCN
 from models.gat import MolGAT
 from models.attentiveFP import MolAttentiveFP
+from models.attentiveFP_edgeattr import MolAttentiveFP_EA
 
 NODE_INPUT_SIZE = 19
 
@@ -37,6 +38,12 @@ class Model(pl.LightningModule):
                                         afp_num_layers=6,
                                         afp_out_channels=1,
                                         afp_num_timesteps=4)
+        elif model_name == 'MolAttentiveFP_EA':
+            self.model = MolAttentiveFP_EA(afp_in_channels=NODE_INPUT_SIZE,
+                                           afp_hidden_channels=32,
+                                           afp_num_layers=6,
+                                           afp_out_channels=1,
+                                           afp_num_timesteps=4)
         self.loss_funct = loss
         self.lr = lr
         self.weight_decay = weight_decay
