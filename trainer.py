@@ -3,6 +3,7 @@ import multiprocessing as mp
 import os
 import os.path as osp
 
+import pandas as pd
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
@@ -41,7 +42,9 @@ def train(batch_size: int,
     pl.utilities.seed.seed_everything(42)
     exp_model_name = 'PERFS'
 
-    logger = pl.loggers.TensorBoardLogger(
+    # logger = pl.loggers.TensorBoardLogger(
+    #     experiments_path, name=exp_model_name)
+    logger = pl.loggers.CSVLogger(
         experiments_path, name=exp_model_name)
     print("Version: {}".format(logger.version))
 
@@ -76,22 +79,25 @@ def train(batch_size: int,
                          callbacks=callbacks_list,
                          max_epochs=num_epochs,
                          logger=logger,
-                         log_every_n_steps=2,
+                         log_every_n_steps=1,
                          num_sanity_val_steps=0)
 
     trainer.fit(model, datamodule)
     training_time = timer.time_elapsed("train")
 
+    
+    metrics_path = osp.join(experiments_path, exp_model_name,
+                            "version_{}".format(logger.version), 'metrics.csv')
+    
     if trainer.is_global_zero:
-        del trainer
-        trainer_test = pl.Trainer(max_epochs=num_epochs,
-                                  num_sanity_val_steps=0)
-        metrics_on_validation = trainer_test.validate(
-            model, dataloaders=datamodule.val_dataloader())[0]
+        df_metrics = pd.read_csv(metrics_path)
+        last_row = df_metrics.iloc[-1:]
+        print(last_row)
+  
         print('\n{}'.format(training_time), end='')
-        print('{},{},{}'.format(metrics_on_validation['ep_end/val_loss'],
-                                metrics_on_validation['ep_end/val_r2_score'],
-                                metrics_on_validation['ep_end/val_pearson']))
+        print('{},{},{}'.format(last_row['ep_end/train_loss'].item(),
+                                last_row['ep_end/train_r2_score'].item(),
+                                last_row['ep_end/train_pearson'].item()))
 
 
 def main(args, experiments_path):
