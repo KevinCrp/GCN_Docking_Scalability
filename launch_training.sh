@@ -1,6 +1,6 @@
 #!/bin/bash
 NB_TRAINING=10 # The number of training for one set of parameters
-NB_CMDS=51 # The number of commands in commands_list.txt
+NB_CMDS=68 # The number of commands in commands_list.txt
 DIR_NAME="exp" # The directory where is saved commands_list.txt and where results will be saved
 
 FILENAME="$DIR_NAME/commands_list.txt"

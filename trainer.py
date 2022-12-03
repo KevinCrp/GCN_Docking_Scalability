@@ -7,6 +7,7 @@ import pandas as pd
 import pytorch_lightning as pl
 import torch
 import torch.nn.functional as F
+from pytorch_lightning.callbacks import Timer
 from pytorch_lightning.strategies import DDPStrategy
 
 import data
@@ -42,8 +43,6 @@ def train(batch_size: int,
     pl.utilities.seed.seed_everything(42)
     exp_model_name = 'PERFS'
 
-    # logger = pl.loggers.TensorBoardLogger(
-    #     experiments_path, name=exp_model_name)
     logger = pl.loggers.CSVLogger(
         experiments_path, name=exp_model_name)
     print("Version: {}".format(logger.version))
@@ -65,7 +64,7 @@ def train(batch_size: int,
                                         batch_size=bs,
                                         num_workers=mp.cpu_count(),
                                         only_pocket=True)
-    timer = pl.callbacks.Timer()
+    timer = Timer()
     callbacks_list = [timer]
 
     strategy = None
@@ -85,15 +84,14 @@ def train(batch_size: int,
     trainer.fit(model, datamodule)
     training_time = timer.time_elapsed("train")
 
-    
     metrics_path = osp.join(experiments_path, exp_model_name,
                             "version_{}".format(logger.version), 'metrics.csv')
-    
+
     if trainer.is_global_zero:
         df_metrics = pd.read_csv(metrics_path)
         last_row = df_metrics.iloc[-1:]
         print(last_row)
-  
+
         print('\n{}'.format(training_time), end='')
         print('{},{},{}'.format(last_row['ep_end/train_loss'].item(),
                                 last_row['ep_end/train_r2_score'].item(),
@@ -147,7 +145,8 @@ if __name__ == '__main__':
     parser.add_argument('--model_name',
                         type=str,
                         help='The model name',
-                        choices=['MolGCN', 'MolGAT', 'MolAttentiveFP', 'MolAttentiveFP_EA'],
+                        choices=['MolGCN', 'MolGAT',
+                                 'MolAttentiveFP', 'MolAttentiveFP_EA'],
                         required=True)
     args = parser.parse_args()
 
