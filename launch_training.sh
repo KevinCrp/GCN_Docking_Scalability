@@ -1,6 +1,6 @@
 #!/bin/bash
 NB_TRAINING=10 # The number of training for one set of parameters
-NB_CMDS=68 # The number of commands in commands_list.txt
+NB_CMDS=72 # The number of commands in commands_list.txt
 DIR_NAME="exp" # The directory where is saved commands_list.txt and where results will be saved
 
 FILENAME="$DIR_NAME/commands_list.txt"
@@ -21,6 +21,10 @@ do
     eval $cmd &> tmp.txt
     perfs=$(tail -n 1 tmp.txt)
     echo $perfs >> $filename
+    nb_devices=$(echo $cmd | sed "s/--nb_devices /%/" | sed "s/ --model_name/%/" | cut -d'%' -f2)
+    bs=$(echo $cmd | sed "s/--batch_size /%/" | sed "s/ --accelerator/%/" | cut -d'%' -f2)
+    python extract_mem_copy.py --nb_gpus $nb_devices --gbs $bs
+    rm nvprof_out_*.csv
   done
 done
 
