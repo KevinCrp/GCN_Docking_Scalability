@@ -88,7 +88,7 @@ if __name__ == '__main__':
                         type=int,
                         help='nb_gpus')
     parser.add_argument('--gbs',
-                        type=float,
+                        type=int,
                         help='Global Batch Size')
     args = parser.parse_args()
     cuda_memcpy_to_csv(args.nb_gpus, args.gbs)

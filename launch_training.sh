@@ -21,8 +21,8 @@ do
     eval $cmd &> tmp.txt
     perfs=$(tail -n 1 tmp.txt)
     echo $perfs >> $filename
-    nb_devices=$(echo $cmd | sed "s/--nb_devices /%/" | sed "s/ --model_name/%/" | cut -d'%' -f2)
-    bs=$(echo $cmd | sed "s/--batch_size /%/" | sed "s/ --accelerator/%/" | cut -d'%' -f2)
+    nb_devices=$(echo $cmd | sed "s/--nb_devices /@/" | sed "s/ --model_name/@/" | cut -d'@' -f2)
+    bs=$(echo $cmd | sed "s/--batch_size /@/" | sed "s/ --accelerator/@/" | cut -d'@' -f2)
     python extract_mem_copy.py --nb_gpus $nb_devices --gbs $bs
     rm nvprof_out_*.csv
   done
