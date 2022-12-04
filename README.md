@@ -20,5 +20,6 @@
 2. Create the graphs `python data.py`
 
 ## Launch the trainings
-You can set the `exp/commands_/_list.txt` to choose which trainings will be done.
-Set `launch_training.sh` (lines 2 and 3)
+1. You can set the `exp/commands_/_list.txt` to choose which trainings will be done.
+2. Set `launch_training.sh` (lines 2 and 3) with the correct numbers
+3. Run `./launch_training.sh`
