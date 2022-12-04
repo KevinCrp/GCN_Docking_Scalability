@@ -51,14 +51,15 @@ def extract_memcopy_cuda(nvprof_out_path):
     return cuda_memcpy_list
 
 
-def save_in_csv(memcpy_name, info, nb_gpus, gbs):
+def save_in_csv(memcpy_name, info, nb_gpus, gbs, model):
     filename_csv = "{}.csv".format(memcpy_name)
     new_file = osp.isfile(filename_csv)
     with open(filename_csv, 'a') as f:
         if not new_file:
-            f.write("NB_GPUs,GBS,Time(%),Time(ms),Calls,Avg(ms),Min(ms),Max(ms)\n")
-        f.write("{},{},{},{},{},{},{},{}\n".format(nb_gpus,
+            f.write("NB_GPUs,GBS,Model,Time(%),Time(ms),Calls,Avg(ms),Min(ms),Max(ms)\n")
+        f.write("{},{},{},{},{},{},{},{},{}\n".format(nb_gpus,
                                                    gbs,
+                                                   model,
                                                    round(info['Time(%)'], 3),
                                                    round(info['Time(ms)'], 3),
                                                    info['Calls'],
@@ -67,7 +68,7 @@ def save_in_csv(memcpy_name, info, nb_gpus, gbs):
                                                    round(info['Max(ms)'], 3)))
 
 
-def cuda_memcpy_to_csv(nb_gpus, gbs):
+def cuda_memcpy_to_csv(nb_gpus, gbs, model):
     list_nvprof_out = glob('nvprof_out*')
     list_mem = []
     for nvprof_out in list_nvprof_out:
@@ -79,7 +80,7 @@ def cuda_memcpy_to_csv(nb_gpus, gbs):
     for name, df_group in groups:
         print(name)
         print(df_group.mean(numeric_only=True))
-        save_in_csv(name, df_group.mean(numeric_only=True), nb_gpus, gbs)
+        save_in_csv(name, df_group.mean(numeric_only=True), nb_gpus, gbs, model)
 
 
 if __name__ == '__main__':
@@ -90,5 +91,8 @@ if __name__ == '__main__':
     parser.add_argument('--gbs',
                         type=int,
                         help='Global Batch Size')
+    parser.add_argument('--model',
+                        type=str,
+                        help='Model Name')
     args = parser.parse_args()
-    cuda_memcpy_to_csv(args.nb_gpus, args.gbs)
+    cuda_memcpy_to_csv(args.nb_gpus, args.gbs, args.model)
