@@ -93,7 +93,7 @@ def train(batch_size: int,
         print(last_row)
 
         print('\n{}'.format(training_time), end='')
-        print('{},{},{}'.format(last_row['ep_end/train_loss'].item(),
+        print(',{},{},{}'.format(last_row['ep_end/train_loss'].item(),
                                 last_row['ep_end/train_r2_score'].item(),
                                 last_row['ep_end/train_pearson'].item()))
 
