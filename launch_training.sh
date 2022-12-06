@@ -30,6 +30,7 @@ do
     # mkdir $nvprof_dir_j
     # mv nvprof_out_*.csv $nvprof_dir_j/.
     rm nvprof_out_*.csv
+    rm -rf experiments
   done
 done
 
