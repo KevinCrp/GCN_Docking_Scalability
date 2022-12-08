@@ -15,7 +15,7 @@ do
   model=$(echo $cmd | sed "s/--model_name /@/" | cut -d'@' -f2)
   echo "$i - $current_date - $cmd">> $ETA_FILENAME
   cmd_tmp=${cmd//[ ]/_}
-  filename="$DIR_NAME/RES_--batch_size_$bs_--nb_devices_$nb_devices_--model_$model.csv"
+  filename="$DIR_NAME/RES_--batch_size_$bs--nb_devices_$nb_devices--model_$model.csv"
   #nvprof_dir="$DIR_NAME/"${cmd_tmp//[.]/_}
   echo "train_time,loss,r2,rp" >> $filename
   for j in $( seq 1 $NB_TRAINING)
