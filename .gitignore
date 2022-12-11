@@ -2,3 +2,7 @@ data/raw/*
 data/raw
 *.pyc
 data/processed/*
+exp/DGX_old
+exp/eta.txt
+exp/DGX/files_*
+exp/DGX_AFPEA/files_*

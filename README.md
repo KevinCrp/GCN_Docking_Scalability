@@ -1,4 +1,4 @@
-# GCN_Docking_Scalability
+# GCN DockingScalability
 
 ## Build an environment
 ### Docker
@@ -20,6 +20,6 @@
 2. Create the graphs `python data.py`
 
 ## Launch the trainings
-1. You can set the `exp/commands_/_list.txt` to choose which trainings will be done.
+1. You can set the `exp/commands_list.txt` to choose which trainings will be done.
 2. Set `launch_training.sh` (lines 2 and 3) with the correct numbers
 3. Run `./launch_training.sh`
