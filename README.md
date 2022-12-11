@@ -1,5 +1,7 @@
 # GCN DockingScalability
 
+Our results are in the `exp` directory.
+
 ## Build an environment
 ### Docker
 1. Create the Docker image `docker build -t your_image_name .`
